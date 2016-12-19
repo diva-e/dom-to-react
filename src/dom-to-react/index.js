@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Html2React {
+class Dom2React {
 
   tests = [];
 
@@ -99,4 +99,4 @@ class Html2React {
 
 }
 
-export default Html2React;
+export default Dom2React;

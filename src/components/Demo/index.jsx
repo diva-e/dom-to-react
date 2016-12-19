@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Html2React from '../../html-to-react';
+import Dom2React from '../../dom-to-react';
 import DemoChild from './DemoChild';
 import ReactMarkdown from 'react-markdown';
 
@@ -7,7 +7,7 @@ class Demo extends Component {
 
   render() {
 
-    const h2r = new Html2React([
+    const h2r = new Dom2React([
       {
         condition: (node, key) => (node.nodeName.toLowerCase() === 'div' && node.className.indexOf('root') >= 0),
         modify: (node, key, level) => {

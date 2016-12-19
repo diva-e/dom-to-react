@@ -46,7 +46,7 @@ const resolve = {
 const plugins = [];
 
 const htmlWebpackPlugin = new HTMLWebpackPlugin({
-  title: 'html-to-react Demo',
+  title: 'dom-to-react Demo',
   template: 'src/assets/index.ejs',
 });
 plugins.push(htmlWebpackPlugin);

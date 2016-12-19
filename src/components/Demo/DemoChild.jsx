@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Html2React from '../../html-to-react';
+import Dom2React from '../../dom-to-react';
 
 class DemoChild extends Component {
   render() {
