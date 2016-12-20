@@ -14,6 +14,10 @@ const output = {
   filename: 'dom-to-react.js',
 };
 
+if (isProd) {
+  output.libraryTarget = 'umd';
+  output.library = 'dom-to-react';
+}
 
 const externals = isProd ? {
   react: {
