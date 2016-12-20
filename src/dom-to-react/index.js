@@ -2,8 +2,6 @@ import React from 'react';
 
 class Dom2React {
 
-  tests = [];
-
   constructor(tests) {
     this.tests = tests || [];
   }

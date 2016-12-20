@@ -7,12 +7,22 @@ const isProd = nodeEnv === 'production';
 
 const devtool = isProd ? 'hidden-source-map' : 'source-map';
 
-const entry = './src/main.js'
+const entry = isProd ? './src/dom-to-react/index.js' : './src/main.js';
 
 const output = {
   path: path.join(__dirname, 'dist'),
-  filename: 'main.js',
+  filename: 'dom-to-react.js',
 };
+
+
+const externals = isProd ? {
+  react: {
+    root: 'React',
+    commonjs2: 'react',
+    commonjs: 'react',
+    amd: 'react',
+  },
+} : null;
 
 
 const loaders = [];
@@ -28,12 +38,13 @@ const babelLoader = {
 };
 loaders.push(babelLoader);
 
-const jsonLoader = {
-  test: /\.json$/,
-  loader: 'json',
-};
-loaders.push(jsonLoader);
-
+if (!isProd) {
+  const jsonLoader = {
+    test: /\.json$/,
+    loader: 'json',
+  };
+  loaders.push(jsonLoader);
+}
 
 const resolve = {
   extensions: ['', '.js', '.jsx'],
@@ -45,11 +56,14 @@ const resolve = {
 
 const plugins = [];
 
-const htmlWebpackPlugin = new HTMLWebpackPlugin({
-  title: 'dom-to-react Demo',
-  template: 'src/assets/index.ejs',
-});
-plugins.push(htmlWebpackPlugin);
+if (!isProd) {
+
+  const htmlWebpackPlugin = new HTMLWebpackPlugin({
+    title: 'dom-to-react Demo',
+    template: 'src/assets/index.ejs',
+  });
+  plugins.push(htmlWebpackPlugin);
+}
 
 const definePlugin = new webpack.DefinePlugin({
   NO_WRITE_FS: true,
@@ -58,6 +72,7 @@ const definePlugin = new webpack.DefinePlugin({
   },
 });
 plugins.push(definePlugin);
+
 
 if (!isProd) {
   const namedModulesPlugin = new webpack.NamedModulesPlugin();
@@ -76,9 +91,10 @@ module.exports = {
   devtool,
   entry,
   output,
+  externals,
   module: {
     loaders,
-  },
+  },  
   resolve,
   plugins,
   devServer,
