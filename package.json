@@ -1,6 +1,6 @@
 {
   "name": "dom-to-react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A versatile replacement for 'dangerouslySetInnerHTML'. Let's you build react-components deep within a regular HTML-Dom",
   "keywords": [
     "dangerouslySetInnerHTML",
@@ -8,6 +8,10 @@
     "component"
   ],
   "main": "dist/dom-to-react.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "clean": "rimraf dist",
     "build:dist": "cross-env NODE_ENV=production webpack",
