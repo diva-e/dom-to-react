@@ -54,13 +54,14 @@ all the functions are being passed the following params:
  * `@param {node}` the node being tested/manipulated
  * `@param {key}` the React-key which would be assigned when the node renders (always in the format `${level}-${index}`)
  * `@param {level}` the level how deep in the DOM the nod is nested (an integer)
+ * `@param {parser}` the parser itself
 
 ```javascript
 var options = [
   {
-	 // If this function returns true, the two following functions are called as long as they are defined
-	 // This function must always return true or false
-  	'condition': function(node, key) { return node.nodeName.toLowerCase() === 'div'; },
+	// If this function returns true, the two following functions are called as long as they are defined
+	// This function must always return true or false
+	'condition': function(node, key) { return node.nodeName.toLowerCase() === 'div'; },
 
 	// This function can be used for easy manipulations to the node, e.g. for removing or adding attributes
 	// This function must always return a DOM-Node (even if it's a new one created by document.createElement)
@@ -75,10 +76,10 @@ var options = [
 
 ## Example instructions
 
-#### Add a class to all `div`'s:
+#### Add a class to all `div`s:
 ```javascript
 {
-  condition: function(node, key, level) { return node.nodeName.toLowerCase() === 'div';} ),
+  condition: function(node, key, level, parser) { return node.nodeName.toLowerCase() === 'div';} ),
   modify: function(node, key, level) {
     node.className += ' a-class-added';
     return node;
@@ -86,11 +87,11 @@ var options = [
 }
 ```
 
-#### Remove all `div`'s with a certain class:
+#### Remove all `div`s with a certain class:
 ```javascript
 {
-  condition: function(node, key, level) { return node.className.indexOf('delete-me') >= 0;} ),
-  action: function(node, key, level) {
+  condition: function(node, key, level parser) { return node.className.indexOf('delete-me') >= 0;} ),
+  action: function(node, key, level, parser) {
     return null;
   }
 }
@@ -99,8 +100,8 @@ var options = [
 #### Initialize a react component for all nodes of a certain type (e.g. the [react-markdown](https://www.npmjs.com/package/react-markdown)-component):
 ```javascript
 {
-  condition: function(node, key, level) return {node.nodeName.toLowerCase() === 'pre'},
-  action: function(node, key, level) {
+  condition: function(node, key, level, parser) return {node.nodeName.toLowerCase() === 'pre'},
+  action: function(node, key, level, parser) {
     return <ReactMarkdown key={key} source={node.innerText} />;
   }
 }
@@ -109,8 +110,8 @@ var options = [
 #### transform one node-type into another (e.g. ul=>ol) but preserve all childnodes:
 ```javascript
 {
-  condition: function(node, key, level) { return node.nodeName.toLowerCase() === 'ul'},
-  modify: function(node, key, level) {
+  condition: function(node, key, level parser) { return node.nodeName.toLowerCase() === 'ul'},
+  modify: function(node, key, level, parser) {
     var ol = document.createElement('ol');
     for (var i = node.childNodes.length - 1; i >= 0; i--) {
       ol.appendChild(node.childNodes[i]);
@@ -130,8 +131,8 @@ var options = [
 
 ```javascript
 {
-  condition: function(node, key, level) { return node.className.indexOf('complex-component') >= 0;},
-  action: function(node, key, level) {
+  condition: function(node, key, level, parser) { return node.className.indexOf('complex-component') >= 0;},
+  action: function(node, key, level, parser) {
     var props = false;
     for (var i = node.childNodes.length - 1; i >= 0; i--) {
       if (childNode.nodeType === 8) {
