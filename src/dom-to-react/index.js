@@ -67,7 +67,7 @@ class Dom2React {
     switch (node.nodeType) {
       case 1: // regular dom-node
         return React.createElement(
-          node.nodeName,
+          node.nodeName.toLowerCase(),
           this.prepareAttributes(node, key),
           this.prepareChildren(node.childNodes, level)
         );
