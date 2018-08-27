@@ -1,5 +1,23 @@
 import React from 'react';
 
+const hyphen2CamelCase = (str) =>  str.replace(/-([a-z])/gi,(s, group) =>  group.toUpperCase());
+const style2object = (styleString) => styleString.split(';').filter(s => s.length).reduce((a, b) => {
+  const keyValue = b.split(':');
+  a[hyphen2CamelCase(keyValue[0])] = keyValue[1];
+  return a;
+}, {});
+
+const poorlyNamedAttributes = {
+  "tabindex" : "tabIndex",
+  "accesskey" : "accessKey",
+  "autocomplete" : "autoComplete",
+  "text-anchor" : "textAnchor",
+  "datetime" : "dateTime",
+  "colspan" : "colSpan" ,
+  "rowspan" : "rowSpan" ,
+  "for" : "htmlFor",
+};
+
 class Dom2React {
 
   constructor(tests) {
@@ -19,10 +37,13 @@ class Dom2React {
     const attributes = {
       key: reactKey,
     };
-    if (node.className) attributes.className = node.className;
+    if (node.attributes["class"]) attributes.className = node.attributes["class"].value;
+    //since styles must be an object, we have to parse and generate it for react (rather than disgard it)
+    if (node.attributes["style"] && node.attributes["style"].value) attributes.style = style2object(node.attributes["style"].value);
 
     Array.prototype.slice.call(node.attributes).map((att) => {
       switch (att.name) {
+        //these are manually handled above, so break;
         case 'class':
         case 'style':
           break;
@@ -34,7 +55,12 @@ class Dom2React {
           attributes[att.name] = att.name;
           break;
         default:
+        if (poorlyNamedAttributes[att.name]) {
+          attributes[poorlyNamedAttributes[att.name]] = att.value;
+        } else {
           attributes[att.name] = att.value;
+        }
+          
       }
       return null;
     });
@@ -67,7 +93,7 @@ class Dom2React {
     switch (node.nodeType) {
       case 1: // regular dom-node
         return React.createElement(
-          node.nodeName,
+          node.nodeName.toLowerCase(),
           this.prepareAttributes(node, key),
           this.prepareChildren(node.childNodes, level)
         );
@@ -82,7 +108,7 @@ class Dom2React {
           case 'tr':
             return null;
           default:
-            return node.nodeValue.toString();
+            return node.nodeValue.trim().toString();
         }
 
       case 8: // html-comment
