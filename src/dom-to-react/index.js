@@ -1,4 +1,5 @@
 import React from 'react';
+import noTextChildNodes from './noTextChildNodes';
 
 class Dom2React {
 
@@ -73,17 +74,22 @@ class Dom2React {
         );
 
       case 3: // textnode
-        if (!node.parentNode) return node.nodeValue.toString();
-        switch (node.parentNode.nodeName.toLowerCase()) {
-          case 'table':
-          case 'thead':
-          case 'tbody':
-          case 'tfoot':
-          case 'tr':
-            return null;
-          default:
-            return node.nodeValue.toString();
+        const nodeText = node.nodeValue.toString();
+
+        if (!node.parentNode) {
+          return nodeText;
         }
+
+        const parentNodeName = node.parentNode.nodeName.toLowerCase();
+
+        if (noTextChildNodes.indexOf(parentNodeName) !== -1) {
+          if (/\S/.test(nodeText)) {
+            console.warn(`a textnode is not allowed inside '${parentNodeName}'. your text "${nodeText}" will be ignored`);
+          }
+          return null;
+        }
+
+        return nodeText;
 
       case 8: // html-comment
         // console.info(node.nodeValue.toString());
