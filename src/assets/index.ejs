@@ -9,50 +9,50 @@
 <body>
 <main id="app">
   <div class="root">
-    
+
     <div class="delete-me">Delete Me!</div>
-    
+
     <hr/>
-  
+
     <p>A simple &lt;p&gt;</p>
-  
+
     <hr/>
 
     <img src="src/assets/image.svg" title="Attributes are passed on to the component" alt="Square, triangel, circle" />
-  
+
     <hr/>
-  
+
     <ul>
       <li>Just a &lt;ul&gt; which will not be changed</li>
       <li><a href="http://www.google.de">Link</a></li>
     </ul>
-    
+
     <hr/>
-  
+
     <ul class="wannabe-ol">
       <li>Just a &lt;ul&gt; which will be converted into a &lt;ol&gt;</li>
       <li><a href="http://www.google.de">Link</a></li>
     </ul>
-    
+
     <hr/>
-  
+
     <div class="demo-child-html">
       <h2>I am a real component</h2>
       <p>With headline and text. All loaded from the HTML dom</p>
     </div>
-  
+
     <hr/>
-  
+
     <div class="demo-child-json">
       <!-- {"headline":"I am a real component","text":"All my props are from a json within a HTML-Comment." } -->
     </div>
-  
+
     <hr/>
-  
+
     <div class="demo-child-json">
       <!-- {"headline":"I am a real component","text":"But my JSON is broken, so I'll throw an error... :`( " -->
     </div>
-  
+
     <hr/>
 
       <div title="These are some deeper nested text elements">
@@ -70,7 +70,7 @@
       </div>
 
     <hr/>
-  
+
     <pre># Markdown Headline
 Some markdown text which will be a paragraph.
 
@@ -90,10 +90,14 @@ for (var i = Things.length - 1; i >= 0; i--) {
 ### Level 3 Headline
 Text with a [link](http://www.google.de/).
     </pre>
-  
+
     <hr/>
 
     <table>
+      <colgroup>
+        <col style="width: 100px;">
+        <col style="width: 150px;">
+      </colgroup>
       <thead>
         <tr><th>Cell</th><th>Cell</th></tr>
       </thead>
