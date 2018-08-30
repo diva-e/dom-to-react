@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Dom2React from '../../dom-to-react';
 import DemoChild from './DemoChild';
-import ReactMarkdown from 'react-markdown';
 
 class Demo extends Component {
 
@@ -20,13 +19,6 @@ class Demo extends Component {
         action: (node, key, level) => {
           console.info('`delete-me` removed');
           return null;
-        },
-      },
-      {
-        condition: (node, key) => (node.nodeName.toLowerCase() === 'pre'),
-        action: (node, key, level) => {
-          const mdText = node.innerText.split('\n      ').join('\n');
-          return <ReactMarkdown source={mdText} />;
         },
       },
       {
@@ -49,7 +41,7 @@ class Demo extends Component {
         action: (node, key, level) => {
 
           const childNodes = [].slice.call(node.childNodes);
-          let props = false
+          let props = false;
           try {
             props = childNodes.map(childNode => ((childNode.nodeType === 8) ? JSON.parse(childNode.nodeValue) : false)).filter(Boolean).pop();
           } catch (er) {
