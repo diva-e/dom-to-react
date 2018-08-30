@@ -1,12 +1,11 @@
-# Dom to React 
+# Dom to React
 
-`dom-to-react` is a replacement for React's own method `dangerouslySetInnerHTML`. 
+`dom-to-react` is a replacement for React's own method `dangerouslySetInnerHTML`.
 
 It lets you build a React structure from a regular HTML-Dom.
 Your React application is aware of all elements wthin the added DOM, and it even lets you initialize your own React components anywhere inside that structure.
 
 dom-to-react is very lightweight. It does not use any further third party modules.
-
 
 ## How to install
 
@@ -26,7 +25,7 @@ It takes a regular Dom-Node as entrypoint from which it creates the according Re
   </div>
 </main>
 ```
- 
+
 ```javascript
 import Dom2react from 'dom-to-react';
 import React from 'react';
@@ -79,7 +78,7 @@ var options = [
 #### Add a class to all `div`s:
 ```javascript
 {
-  condition: function(node, key, level, parser) { return node.nodeName.toLowerCase() === 'div';} ),
+  condition: function(node, key, level, parser) { return node.nodeName.toLowerCase() === 'div';},
   modify: function(node, key, level) {
     node.className += ' a-class-added';
     return node;
@@ -90,7 +89,7 @@ var options = [
 #### Remove all `div`s with a certain class:
 ```javascript
 {
-  condition: function(node, key, level parser) { return node.className.indexOf('delete-me') >= 0;} ),
+  condition: function(node, key, level, parser) { return node.className.indexOf('delete-me') >= 0;},
   action: function(node, key, level, parser) {
     return null;
   }
@@ -110,7 +109,7 @@ var options = [
 #### transform one node-type into another (e.g. ul=>ol) but preserve all childnodes:
 ```javascript
 {
-  condition: function(node, key, level parser) { return node.nodeName.toLowerCase() === 'ul'},
+  condition: function(node, key, level, parser) { return node.nodeName.toLowerCase() === 'ul'},
   modify: function(node, key, level, parser) {
     var ol = document.createElement('ol');
     for (var i = node.childNodes.length - 1; i >= 0; i--) {
