@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`d2r adds 'a-class-added' to all divs 1`] = `
+<div
+  className="add-a-class a-class-added"
+>
+  
+  
+  <div
+    className="a-class-added"
+  >
+    Div
+  </div>
+  
+  
+  <p>
+    Paragraph
+  </p>
+  
+  
+  <div
+    className="a-class-added"
+  >
+    Div
+  </div>
+  
+  
+  <p>
+    Paragraph
+  </p>
+  
+
+</div>
+`;
+
+exports[`d2r changes a ul to a ol 1`] = `
+<div
+  className="ul-li"
+>
+  
+  
+  <ol>
+    <li>
+      List Item
+    </li>
+    <li>
+      List Item
+    </li>
+  </ol>
+  
+
+</div>
+`;
+
+exports[`d2r emits a whitespace warning 1`] = `
+<div
+  className="ul-li-warn"
+>
+  
+  
+  <ul>
+    <li>
+      This is okay
+    </li>
+  </ul>
+  
+
+</div>
+`;
+
+exports[`d2r ignores a html comment 1`] = `
+<div
+  className="comment"
+>
+  
+  
+  
+
+</div>
+`;
+
+exports[`d2r initializes a react component 1`] = `
+<div
+  className="init-component"
+>
+  
+  
+  <pre>
+    " {\\n    \\"key\\": \\"value\\"\\n  }"
+  </pre>
+  
+
+</div>
+`;
+
+exports[`d2r removes a div with a special classname 1`] = `
+<div
+  className="delete-one"
+>
+  
+  
+  
+  
+  <div
+    className="dont-delete-me"
+  />
+  
+
+</div>
+`;
+
+exports[`d2r renders a list and removes whitespace 1`] = `
+<div
+  className="ul-li"
+>
+  
+  
+  <ul>
+    <li>
+      List Item
+    </li>
+    <li>
+      List Item
+    </li>
+  </ul>
+  
+
+</div>
+`;
+
+exports[`d2r renders a simple p-tag without error 1`] = `
+<div
+  className="simple-p"
+>
+  
+  
+  <p>
+    A simple p-tag
+  </p>
+  
+
+</div>
+`;

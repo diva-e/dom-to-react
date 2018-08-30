@@ -92,11 +92,7 @@ class Dom2React {
         return nodeText;
 
       case 8: // html-comment
-        // console.info(node.nodeValue.toString());
-        return null;
-
       default:
-        // console.warn(`unhandled nodetype ${node.nodeType}`);
         return null;
     }
   }
