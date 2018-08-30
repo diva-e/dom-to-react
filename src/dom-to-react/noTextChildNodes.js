@@ -22,4 +22,4 @@ const noTextChildNodes = [
   'wbr',
 ];
 
-export default noTextChildNodes
+export default noTextChildNodes;
