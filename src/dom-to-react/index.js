@@ -42,7 +42,7 @@ class Dom2React {
     return attributes;
   }
 
-  prepareNode(_node, level, index) {
+  prepareNode(_node, level = 0, index = 0) {
     if (!_node) return null;
     let node = _node;
     const key = `${level}-${index}`;
