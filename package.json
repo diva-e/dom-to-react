@@ -1,6 +1,6 @@
 {
   "name": "dom-to-react",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A versatile replacement for 'dangerouslySetInnerHTML'. Let's you build react-components deep within a regular HTML-Dom",
   "keywords": [
     "dangerouslySetInnerHTML",
