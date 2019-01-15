@@ -6,7 +6,7 @@ class Demo extends Component {
 
   render() {
 
-    const h2r = new Dom2React([
+    const d2r = new Dom2React([
       {
         condition: (node, key) => (node.nodeName.toLowerCase() === 'div' && node.className.indexOf('root') >= 0),
         modify: (node, key, level) => {
@@ -45,9 +45,9 @@ class Demo extends Component {
           try {
             props = childNodes.map(childNode => ((childNode.nodeType === 8) ? JSON.parse(childNode.nodeValue) : false)).filter(Boolean).pop();
           } catch (er) {
-            return <p>{er.toString()}</p>;
+            return <p key={key}>{er.toString()}</p>;
           }
-          return <DemoChild text={props.text} headline={props.headline} />;
+          return <DemoChild key={key} text={props.text} headline={props.headline} />;
         }
       },
       {
@@ -56,14 +56,14 @@ class Demo extends Component {
           const texts = node.innerText.split('\n');
           const headline = node.querySelector('h2').innerText;
           const restText = node.querySelector('p').innerText;
-          return <DemoChild text={restText} headline={headline} />;
+          return <DemoChild key={key} text={restText} headline={headline} />;
         }
       }
     ]);
 
     return (
       <div>
-        {h2r.prepareNode(this.props.dom, 0, 0)}
+        {d2r.prepareNode(this.props.dom, 0, 0)}
       </div>
     );
   }
