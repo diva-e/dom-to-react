@@ -1,5 +1,6 @@
 import React from 'react';
 import noTextChildNodes from './noTextChildNodes';
+import possibleStandardNames from './possibleStandardNames';
 
 class Dom2React {
 
@@ -20,10 +21,15 @@ class Dom2React {
     const attributes = {
       key: reactKey,
     };
-    if (node.className) attributes.className = node.className;
+
+    const nodeClassNames = node.getAttribute('class');
+    if (nodeClassNames) {
+      attributes.className = nodeClassNames;
+    }
 
     Array.prototype.slice.call(node.attributes).map((att) => {
       switch (att.name) {
+        //these are manually handled above, so break;
         case 'class':
         case 'style':
           break;
@@ -35,7 +41,11 @@ class Dom2React {
           attributes[att.name] = att.name;
           break;
         default:
-          attributes[att.name] = att.value;
+          if (possibleStandardNames[att.name]) {
+            attributes[possibleStandardNames[att.name]] = att.value;
+          } else {
+            attributes[att.name] = att.value;
+          }
       }
       return null;
     });
