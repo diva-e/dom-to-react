@@ -144,6 +144,36 @@ var options = [
 }
 ```
 
+#### Example: also use the `style` attribute of a node.
+
+dom-to-react is not meant to directly load all instructions from a node's `style`-attribute.  
+But as [suggested here](https://github.com/diva-e/dom-to-react/pull/3), style instructions can be added if required as follows:
+
+```html
+<div class="with-style" style="background-color: rebeccapurple; color: lime; border-radius: 7px; padding: 12px;">
+  This Element has a <code>style</code> attribute.<br>
+  It also shows how to use the <code>parser</code>-argument
+</div>
+```
+
+```javascript
+{
+  action: function(node, key, level, parser) {
+    // example how to adapt styling instructions from a node
+    const hyphen2CamelCase = (str) =>  str.replace(/-([a-z])/gi,(s, group) =>  group.toUpperCase());
+    const style2object = (styleString) => styleString.split(';').filter(s => s.length).reduce((styles, statement) => {
+      const keyValue = statement.split(':');
+      styles[hyphen2CamelCase(keyValue[0]).trim()] = keyValue[1].trim();
+      return styles;
+    }, {});
+    return <div key={key} style={style2object(node.getAttribute('style'))}>{
+      // the parser can be called again to handle "regular" child-nodes within a component
+      parser.prepareChildren(node.childNodes, level)
+    }</div>;
+}
+```
+
+
 ## Demo
 To see the included demo in action, clone/download this repo and
 

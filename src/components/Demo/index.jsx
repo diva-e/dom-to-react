@@ -58,6 +58,22 @@ class Demo extends Component {
           const restText = node.querySelector('p').innerText;
           return <DemoChild key={key} text={restText} headline={headline} />;
         }
+      },
+      {
+        condition: (node, key) => (node.nodeName.toLowerCase() === 'div' && node.className.indexOf('with-style') >= 0),
+        action: (node, key, level, parser) => {
+
+          const hyphen2CamelCase = (str) =>  str.replace(/-([a-z])/gi,(s, group) =>  group.toUpperCase());
+          const style2object = (styleString) => styleString.split(';').filter(s => s.length).reduce((styles, statement) => {
+            const keyValue = statement.split(':');
+            styles[hyphen2CamelCase(keyValue[0]).trim()] = keyValue[1].trim();
+            return styles;
+          }, {});
+
+          return <div key={key} style={style2object(node.getAttribute('style'))}>{
+            parser.prepareChildren(node.childNodes, level)
+          }</div>;
+        }
       }
     ]);
 
