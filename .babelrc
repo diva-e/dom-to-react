@@ -7,5 +7,8 @@
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-proposal-object-rest-spread"
   ],
-  "ignore": "\\.test\\.js"
+  "ignore": [
+    "**/*.test.js",
+    "**/*.test.jsx"
+  ]
 }
