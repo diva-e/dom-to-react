@@ -2,6 +2,24 @@ import React from 'react';
 import noTextChildNodes from './noTextChildNodes';
 import possibleStandardNames from './possibleStandardNames';
 
+const hyphen2CamelCase = (str) =>  str.replace(/-([a-z])/gi,(s, group) =>  group.toUpperCase());
+const style2object = (styleString) => styleString.split(';').filter(s => s.length).reduce((a, b) => {
+  const keyValue = b.split(':');
+  a[hyphen2CamelCase(keyValue[0])] = keyValue[1];
+  return a;
+}, {});
+
+const poorlyNamedAttributes = {
+  "tabindex" : "tabIndex",
+  "accesskey" : "accessKey",
+  "autocomplete" : "autoComplete",
+  "text-anchor" : "textAnchor",
+  "datetime" : "dateTime",
+  "colspan" : "colSpan" ,
+  "rowspan" : "rowSpan" ,
+  "for" : "htmlFor",
+};
+
 class Dom2React {
 
   constructor(tests) {
