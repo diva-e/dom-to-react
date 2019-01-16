@@ -7,6 +7,12 @@ const isProd = nodeEnv === 'production';
 
 const devtool = isProd ? 'hidden-source-map' : 'source-map';
 
+const mode = isProd ? 'production' : 'development';
+
+const performance = isProd ? {} : {
+  hints: false
+};
+
 const entry = isProd ? './src/dom-to-react/index.js' : './src/main.js';
 
 const output = {
@@ -26,32 +32,28 @@ const externals = isProd ? {
     commonjs: 'react',
     amd: 'react',
   },
-} : null;
+} : {};
 
 
-const loaders = [];
+const rules = [];
 
 const babelLoader = {
   test: /\.(js|jsx)$/,
   exclude: /node_modules/,
-  loader: 'babel-loader',
-  query: {
-    presets: ['es2015', 'react'],
-    plugins: ['transform-class-properties', 'transform-object-rest-spread'],
-  },
+  use: 'babel-loader',
 };
-loaders.push(babelLoader);
+rules.push(babelLoader);
 
 if (!isProd) {
   const jsonLoader = {
     test: /\.json$/,
-    loader: 'json',
+    use: 'json-loader',
   };
-  loaders.push(jsonLoader);
+  rules.push(jsonLoader);
 }
 
 const resolve = {
-  extensions: ['', '.js', '.jsx'],
+  extensions: ['.js', '.jsx'],
   modules: [
     path.resolve(__dirname, 'src'),
     'node_modules',
@@ -77,13 +79,12 @@ const definePlugin = new webpack.DefinePlugin({
 });
 plugins.push(definePlugin);
 
-
 if (!isProd) {
   const namedModulesPlugin = new webpack.NamedModulesPlugin();
   plugins.push(namedModulesPlugin);
 
-  const noErrorsPlugin = new webpack.NoErrorsPlugin();
-  plugins.push(noErrorsPlugin);
+  const NoEmitOnErrorsPlugin = new webpack.NoEmitOnErrorsPlugin();
+  plugins.push(NoEmitOnErrorsPlugin);
 }
 
 const devServer = {
@@ -93,12 +94,14 @@ const devServer = {
 
 module.exports = {
   devtool,
+  mode,
+  performance,
   entry,
   output,
   externals,
   module: {
-    loaders,
-  },  
+    rules,
+  },
   resolve,
   plugins,
   devServer,

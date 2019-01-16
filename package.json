@@ -1,6 +1,6 @@
 {
   "name": "dom-to-react",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "A versatile replacement for 'dangerouslySetInnerHTML'. Let's you build react-components deep within a regular HTML-Dom",
   "keywords": [
     "dangerouslySetInnerHTML",
@@ -33,23 +33,24 @@
     "react": "^0.14 || ^15 || ^16"
   },
   "devDependencies": {
-    "babel-core": "^6.14.0",
-    "babel-jest": "^23.4.2",
-    "babel-loader": "^6.2.5",
-    "babel-plugin-transform-class-properties": "^6.11.5",
-    "babel-plugin-transform-object-rest-spread": "^6.8.0",
-    "babel-preset-es2015": "^6.14.0",
-    "babel-preset-react": "^6.11.1",
-    "cross-env": "^2.0.1",
-    "html-webpack-plugin": "^2.22.0",
-    "jest": "^23.5.0",
-    "json-loader": "^0.5.4",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-router": "^4.0.0-alpha.3",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "cross-env": "^5.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.6.0",
+    "json-loader": "^0.5.7",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-test-renderer": "^16.4.2",
-    "rimraf": "^2.5.4",
-    "webpack": "2.1.0-beta.22",
-    "webpack-dev-server": "2.1.0-beta.4"
+    "rimraf": "^2.6.3",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
   }
 }
