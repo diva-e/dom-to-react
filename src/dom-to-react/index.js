@@ -1,4 +1,6 @@
 import React from 'react';
+import noTextChildNodes from './noTextChildNodes';
+import possibleStandardNames from './possibleStandardNames';
 
 const hyphen2CamelCase = (str) =>  str.replace(/-([a-z])/gi,(s, group) =>  group.toUpperCase());
 const style2object = (styleString) => styleString.split(';').filter(s => s.length).reduce((a, b) => {
@@ -37,9 +39,11 @@ class Dom2React {
     const attributes = {
       key: reactKey,
     };
-    if (node.attributes["class"]) attributes.className = node.attributes["class"].value;
-    //since styles must be an object, we have to parse and generate it for react (rather than disgard it)
-    if (node.attributes["style"] && node.attributes["style"].value) attributes.style = style2object(node.attributes["style"].value);
+
+    const nodeClassNames = node.getAttribute('class');
+    if (nodeClassNames) {
+      attributes.className = nodeClassNames;
+    }
 
     Array.prototype.slice.call(node.attributes).map((att) => {
       switch (att.name) {
@@ -55,19 +59,18 @@ class Dom2React {
           attributes[att.name] = att.name;
           break;
         default:
-        if (poorlyNamedAttributes[att.name]) {
-          attributes[poorlyNamedAttributes[att.name]] = att.value;
-        } else {
-          attributes[att.name] = att.value;
-        }
-          
+          if (possibleStandardNames[att.name]) {
+            attributes[possibleStandardNames[att.name]] = att.value;
+          } else {
+            attributes[att.name] = att.value;
+          }
       }
       return null;
     });
     return attributes;
   }
 
-  prepareNode(_node, level, index) {
+  prepareNode(_node, level = 0, index = 0) {
     if (!_node) return null;
     let node = _node;
     const key = `${level}-${index}`;
@@ -99,17 +102,22 @@ class Dom2React {
         );
 
       case 3: // textnode
-        if (!node.parentNode) return node.nodeValue.toString();
-        switch (node.parentNode.nodeName.toLowerCase()) {
-          case 'table':
-          case 'thead':
-          case 'tbody':
-          case 'tfoot':
-          case 'tr':
-            return null;
-          default:
-            return node.nodeValue.trim().toString();
+        const nodeText = node.nodeValue.toString();
+
+        if (!node.parentNode) {
+          return nodeText;
         }
+
+        const parentNodeName = node.parentNode.nodeName.toLowerCase();
+
+        if (noTextChildNodes.indexOf(parentNodeName) !== -1) {
+          if (/\S/.test(nodeText)) {
+            console.warn(`a textnode is not allowed inside '${parentNodeName}'. your text "${nodeText}" will be ignored`);
+          }
+          return null;
+        }
+
+        return nodeText;
 
       case 8: // html-comment
         // console.info(node.nodeValue.toString());

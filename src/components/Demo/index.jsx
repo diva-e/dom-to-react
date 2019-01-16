@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import Dom2React from '../../dom-to-react';
 import DemoChild from './DemoChild';
-import ReactMarkdown from 'react-markdown';
 
 class Demo extends Component {
 
   render() {
 
-    const h2r = new Dom2React([
+    const d2r = new Dom2React([
       {
         condition: (node, key) => (node.nodeName.toLowerCase() === 'div' && node.className.indexOf('root') >= 0),
         modify: (node, key, level) => {
@@ -20,13 +19,6 @@ class Demo extends Component {
         action: (node, key, level) => {
           console.info('`delete-me` removed');
           return null;
-        },
-      },
-      {
-        condition: (node, key) => (node.nodeName.toLowerCase() === 'pre'),
-        action: (node, key, level) => {
-          const mdText = node.innerText.split('\n      ').join('\n');
-          return <ReactMarkdown source={mdText} />;
         },
       },
       {
@@ -49,13 +41,13 @@ class Demo extends Component {
         action: (node, key, level) => {
 
           const childNodes = [].slice.call(node.childNodes);
-          let props = false
+          let props = false;
           try {
             props = childNodes.map(childNode => ((childNode.nodeType === 8) ? JSON.parse(childNode.nodeValue) : false)).filter(Boolean).pop();
           } catch (er) {
-            return <p>{er.toString()}</p>;
+            return <p key={key}>{er.toString()}</p>;
           }
-          return <DemoChild text={props.text} headline={props.headline} />;
+          return <DemoChild key={key} text={props.text} headline={props.headline} />;
         }
       },
       {
@@ -64,14 +56,30 @@ class Demo extends Component {
           const texts = node.innerText.split('\n');
           const headline = node.querySelector('h2').innerText;
           const restText = node.querySelector('p').innerText;
-          return <DemoChild text={restText} headline={headline} />;
+          return <DemoChild key={key} text={restText} headline={headline} />;
+        }
+      },
+      {
+        condition: (node, key) => (node.nodeName.toLowerCase() === 'div' && node.className.indexOf('with-style') >= 0),
+        action: (node, key, level, parser) => {
+
+          const hyphen2CamelCase = (str) =>  str.replace(/-([a-z])/gi,(s, group) =>  group.toUpperCase());
+          const style2object = (styleString) => styleString.split(';').filter(s => s.length).reduce((styles, statement) => {
+            const keyValue = statement.split(':');
+            styles[hyphen2CamelCase(keyValue[0]).trim()] = keyValue[1].trim();
+            return styles;
+          }, {});
+
+          return <div key={key} style={style2object(node.getAttribute('style'))}>{
+            parser.prepareChildren(node.childNodes, level)
+          }</div>;
         }
       }
     ]);
 
     return (
       <div>
-        {h2r.prepareNode(this.props.dom, 0, 0)}
+        {d2r.prepareNode(this.props.dom, 0, 0)}
       </div>
     );
   }
