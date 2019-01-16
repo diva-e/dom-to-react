@@ -38,6 +38,8 @@ document.body.innerHTML = `
   <div class="delete-me"></div>
   <div class="dont-delete-me"></div>
 </div>
+<div class="modify-warn">
+</div>
 <div class="init-component">
   <!-- {
     "key": "value"
@@ -157,4 +159,29 @@ test('d2r initializes a react component', () => {
   const component = renderer.create(d2r.prepareNode(rootNode));
   expect(component.toJSON()).toMatchSnapshot();
   expect(consoleWarnSpy).toBeCalledTimes(0);
+});
+
+test('d2r warns if the modify funtion returns a react component', () => {
+  const SimpleComponent = (props) => (
+    <pre>
+      { JSON.stringify(props.text, null, 2) }
+    </pre>
+  );
+  const d2r = new Dom2react([
+    {
+      condition: node => (
+        node.classList &&
+        node.classList.contains('modify-warn')
+      ),
+      modify: (node, key) => {
+        return (
+          <div />
+        );
+      }
+    }
+  ]);
+  const rootNode = document.querySelector('.modify-warn');
+  const component = renderer.create(d2r.prepareNode(rootNode));
+  expect(component.toJSON()).toMatchSnapshot();
+  expect(consoleWarnSpy).toBeCalledTimes(1);
 });
